@@ -112,6 +112,17 @@
   margin-left: 0.5rem;
 }
 
+.button{
+  background: #fff;
+  border: 1px solid #0070f3;
+  margin: 2px;
+  padding: 10px;
+}
+
+.button:hover {
+  opacity: 0.5;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
