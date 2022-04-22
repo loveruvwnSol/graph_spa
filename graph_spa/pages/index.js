@@ -8,8 +8,6 @@ import HighchartsMore from "highcharts/highcharts-more";
 import HighchatsExporting from "highcharts/modules/exporting";
 import HighchartsReact from "highcharts-react-official";
 
-import RadarChart from "./api/chart";
-
 export default function Home() {
   const [apiResults, setApiResults] = useState(null);
   useEffect(() => {
@@ -20,22 +18,33 @@ export default function Home() {
         "Content-Type": "application/json;charset=UTF-8",
       },
     })
-      .then((response) => response.body.getReader()) // ReadableStreamを取得する。
+      .then((response) => response.body.getReader())
       .then((reader) => {
-        // ReadableStream.read()はPromiseを返す。
-        // Promiseは{ done, value }として解決される。
         reader.read().then(({ done, value }) => {
-          // データを読み込んだとき：doneはfalse, valueは値。
-          // データを読み込み終わったとき：doneはtrue, valueはundefined。
           const decoder = new TextDecoder();
-          // console.log(JSON.parse(decoder.decode(value)));
           setApiResults(JSON.parse(decoder.decode(value)));
         });
       });
   }, []);
 
   if (!apiResults) return null;
-  console.log(apiResults);
+
+  const RadarChart = {
+    title: {
+      text: "Chart",
+    },
+    xAxis: {
+      categories: ["A", "B", "C"],
+    },
+    yAxis: {
+      categories: ["A", "B", "C"],
+    },
+    series: [
+      {
+        data: [1, 2, 3],
+      },
+    ],
+  };
 
   return (
     <div>
@@ -48,11 +57,19 @@ export default function Home() {
           <h1 className={styles.title}>都道府県別の総人口推移グラフ</h1>
         </div>
         {apiResults.result.map((res) => (
-          <button className={styles.button} key={res.prefName}>
+          <button
+            className={styles.button}
+            key={res.prefName}
+            onClick={() => {
+              console.log(res.prefName);
+            }}
+          >
             ○{JSON.stringify(res.prefName)}
           </button>
         ))}
-        <div>{/* <RadarChart /> */}</div>
+        <div className={styles.chartzone}>
+          <HighchartsReact highcharts={Highcharts} options={RadarChart} />
+        </div>
       </main>
     </div>
   );

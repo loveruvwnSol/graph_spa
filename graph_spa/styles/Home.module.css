@@ -1,20 +1,7 @@
-/* .container {
-  padding: 0 2rem;
-} */
 
 .header {
   max-width: 100%;
   background-color: whitesmoke;
-}
-
-.main {
-  /* min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1; */
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
 }
 
 .footer {
@@ -121,6 +108,10 @@
 
 .button:hover {
   opacity: 0.5;
+}
+
+.chartzone {
+  margin-top: 50px;
 }
 
 @media (max-width: 600px) {
