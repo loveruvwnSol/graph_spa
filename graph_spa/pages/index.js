@@ -27,53 +27,45 @@ export default function Home() {
           setApiResults(JSON.parse(decoder.decode(value)));
         });
       });
-
-    if (apiPopulation) return;
-    fetch(
-      "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=11362&prefCode=11",
-      {
-        headers: {
-          "X-API-KEY": "RiyGy4mJZ8hLABhCcXYrD9O8qyGrun9FtjPAfTlZ",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-      }
-    )
-      .then((response) => response.body.getReader())
-      .then((reader) => {
-        reader.read().then(({ done, value }) => {
-          const dcdr = new TextDecoder();
-          console.log(JSON.parse(dcdr.decode(value)));
-          setApiPopulation(JSON.parse(dcdr.decode(value)));
-        });
-      });
   }, []);
 
+  // const handleClick = () => {
+  //   if (apiPopulation) return;
+  //   fetch(
+  //     "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
+  //       1,
+
+  //     {
+  //       headers: {
+  //         "X-API-KEY": "RiyGy4mJZ8hLABhCcXYrD9O8qyGrun9FtjPAfTlZ",
+  //         "Content-Type": "application/json;charset=UTF-8",
+  //       },
+  //     }
+  //   )
+  //     .then((response) => response.body.getReader())
+  //     .then((reader) => {
+  //       reader.read().then(({ done, value }) => {
+  //         const dcdr = new TextDecoder();
+  //         console.log(JSON.parse(dcdr.decode(value)));
+  //         setApiPopulation(JSON.parse(dcdr.decode(value)));
+  //       });
+  //     });
+  // };
+
   if (!apiResults) return null;
-  if (!apiPopulation) return null;
 
   const RadarChart = {
     title: {
       text: "都道府県別人口推移",
     },
     xAxis: {
-      categories: [
-        apiPopulation.result.data[0].data[0].year,
-        apiPopulation.result.data[0].data[1].year,
-        apiPopulation.result.data[0].data[2].year,
-        apiPopulation.result.data[0].data[3].year,
-        apiPopulation.result.data[0].data[4].year,
-        apiPopulation.result.data[0].data[5].year,
-        apiPopulation.result.data[0].data[6].year,
-        apiPopulation.result.data[0].data[7].year,
-        apiPopulation.result.data[0].data[8].year,
-        apiPopulation.result.data[0].data[9].year,
-      ],
+      categories: [],
       title: {
         text: "年度 (年度)",
       },
     },
     yAxis: {
-      categories: ["400k", "600k", "800k", "1000k", "1200k", "1400k"],
+      categories: [],
       title: {
         text: "人口 (人)",
       },
@@ -85,19 +77,8 @@ export default function Home() {
     },
     series: [
       {
-        name: apiResults.result.prefName,
-        data: [
-          apiPopulation.result.data[0].data[0].value,
-          apiPopulation.result.data[0].data[1].value,
-          apiPopulation.result.data[0].data[2].value,
-          apiPopulation.result.data[0].data[3].value,
-          apiPopulation.result.data[0].data[4].value,
-          apiPopulation.result.data[0].data[5].value,
-          apiPopulation.result.data[0].data[6].value,
-          apiPopulation.result.data[0].data[7].value,
-          apiPopulation.result.data[0].data[8].value,
-          apiPopulation.result.data[0].data[9].value,
-        ],
+        name: "name",
+        data: [],
       },
     ],
   };
@@ -117,7 +98,26 @@ export default function Home() {
             className={styles.button}
             key={res.prefName}
             onClick={() => {
-              console.log(res.prefName);
+              if (apiPopulation);
+              fetch(
+                "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
+                  res.prefCode,
+                {
+                  headers: {
+                    "X-API-KEY": "RiyGy4mJZ8hLABhCcXYrD9O8qyGrun9FtjPAfTlZ",
+                    "Content-Type": "application/json;charset=UTF-8",
+                  },
+                }
+              )
+                .then((response) => response.body.getReader())
+                .then((reader) => {
+                  reader.read().then(({ done, value }) => {
+                    const dcdr = new TextDecoder();
+                    setApiPopulation(JSON.parse(dcdr.decode(value)));
+                    console.log(JSON.parse(dcdr.decode(value)));
+                    console.log(res.prefName);
+                  });
+                });
             }}
           >
             ○{JSON.stringify(res.prefName)}
