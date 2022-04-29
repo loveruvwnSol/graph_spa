@@ -2,6 +2,7 @@
 .header {
   max-width: 100%;
   background-color: whitesmoke;
+  margin-bottom: 10px;
 }
 
 .footer {
@@ -108,6 +109,10 @@
 
 .button:hover {
   opacity: 0.5;
+}
+
+.button:active{
+  color: #0070f3;
 }
 
 .chartzone {
