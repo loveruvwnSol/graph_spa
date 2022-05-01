@@ -29,29 +29,6 @@ export default function Home() {
       });
   }, []);
 
-  // const handleClick = () => {
-  //   if (apiPopulation) return;
-  //   fetch(
-  //     "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
-  //       1,
-
-  //     {
-  //       headers: {
-  //         "X-API-KEY": "RiyGy4mJZ8hLABhCcXYrD9O8qyGrun9FtjPAfTlZ",
-  //         "Content-Type": "application/json;charset=UTF-8",
-  //       },
-  //     }
-  //   )
-  //     .then((response) => response.body.getReader())
-  //     .then((reader) => {
-  //       reader.read().then(({ done, value }) => {
-  //         const dcdr = new TextDecoder();
-  //         console.log(JSON.parse(dcdr.decode(value)));
-  //         setApiPopulation(JSON.parse(dcdr.decode(value)));
-  //       });
-  //     });
-  // };
-
   if (!apiResults) return null;
 
   const RadarChart = {
@@ -78,7 +55,7 @@ export default function Home() {
     series: [
       {
         name: "name",
-        data: [],
+        data: [apiPopulation],
       },
     ],
   };
@@ -113,8 +90,13 @@ export default function Home() {
                 .then((reader) => {
                   reader.read().then(({ done, value }) => {
                     const dcdr = new TextDecoder();
-                    setApiPopulation(JSON.parse(dcdr.decode(value)));
-                    console.log(JSON.parse(dcdr.decode(value)));
+                    setApiPopulation(
+                      JSON.parse(dcdr.decode(value)).result.data[0].data[0]
+                        .value
+                    );
+                    console.log(
+                      JSON.parse(dcdr.decode(value)).result.data[0].data
+                    );
                     console.log(res.prefName);
                   });
                 });
